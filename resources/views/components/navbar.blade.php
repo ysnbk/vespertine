@@ -20,11 +20,28 @@
                 <button class="btn w-100">Log out</button>
             </form>
         </div>
-            @endauth
-            @guest
-            <button data-bs-toggle="modal" data-bs-target="#register">Register</button>
-            <button data-bs-toggle="modal" data-bs-target="#login">Log in</button>
-            @endguest
+        @else
+        <a href="{{ route('register') }}">Register</a>
+        <a href="{{ route('login') }}">Log in</a>
+        @endauth
         </div>
     </div>
 </nav>
+<script>
+    
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>

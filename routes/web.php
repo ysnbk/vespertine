@@ -14,6 +14,8 @@ Route::post('logout',[UserController::class,'logout'])->name('logout');
 Route::post('register',[UserController::class,'userRegister'])->name('userRegister');
 Route::middleware('auth')->group(function(){
     Route::get('/add-to-cart/{id}',[CartController::class,"addToCart"]);
-    Route::post('/deleteFromCart/{id}',[CartController::class,"deleteFromCart"])->name('deleteFromCart');
+    // Route::get('/add-to-cart/{id}',[CartController::class,"addToCart"]);
+    Route::post('/deleteFromCart',[CartController::class,"deleteFromCart"])->name('deleteFromCart');
+    Route::post('/update_quantity',[CartController::class,"updateQuantity"])->name('quantityUpdate');
     
 });

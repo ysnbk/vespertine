@@ -58,7 +58,7 @@ class UserController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'password' => 'Email or password incorrect',
         ])->onlyInput('email');
     }
     public function logout(Request $request)

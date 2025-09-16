@@ -19,20 +19,20 @@
 
   @foreach ($cartItems as $item)
   <div class="cart-item">
-    <img src={{ $item->product->image }} alt={{ $item->product->slug }} />
+    <img src={{ url($item->product->image) }} alt={{ $item->product->slug }} />
     <div class="item-details">
       <h4>{{ $item->product->name}}</h4>
       <p>50ml Eau de Parfum</p>
     </div>
     <div class="item-quantity">
-      <label for="qty1">Qty:</label>
-      <input type="number" id="qty1" name="quantity" min="1" value={{ $item->quantity }} />
+      <label for="qty{{ $item->product->id }}">Qty:</label>
+      <button class="qty-btn" data-id={{ $item->product->id }} data-action="decrease">-</button>
+      <input type="number" disabled id="qty{{ $item->product->id }}" name="quantity" min="1" value={{ $item->quantity }} />
+      <button class="qty-btn" data-id={{ $item->product->id }} data-action="increase">+</button>
+
     </div>
     <div class="item-price">{{ $item->product->price }}</div>
-    <form action={{ route('deleteFromCart',$item->id) }} method="post">
-      @csrf
-      <button class="remove-btn">X</button>
-    </form>
+      <button data-id="{{ $item->id }}" class="remove-btn">X</button>
   </div>
 
   @endforeach
@@ -48,4 +48,48 @@
   </div>
   </div>
   </div>
+  <script src={{ url('script.js') }}></script>
+  <script>
+    document.querySelectorAll('.qty-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+
+    fetch("{{ route('quantityUpdate') }}",{
+      method:"POST",
+      headers:{
+        "Content-type":"application/json",
+        "X-CSRF-TOKEN":"{{ csrf_token() }}"
+      },
+      body: JSON.stringify({
+        action:btn.dataset.action,
+        productId:btn.dataset.id
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success){
+        document.querySelector(`#qty${data.itemId}`).value=data.quantity
+        updateTotal()
+      }
+    })
+    
+  
+  })
+})
+// remove from cart
+const removeBtn = document.querySelectorAll(".remove-btn")
+removeBtn.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    fetch("deleteFromCart",{
+      method:"POST",
+      headers:{
+        "Content-type":"application/json",
+        "X-CSRF-TOKEN":"{{ csrf_token() }}"
+      },
+      body:JSON.stringify({
+        itemId:btn.dataset.id
+      })
+    }).then(res =>res<json())
+  })
+})
+  </script>
   @endauth

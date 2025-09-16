@@ -19,6 +19,7 @@
             </div>
         </div>
         <div class="product">
+            @if ($products->count()>0)
             @foreach ($products as $product)
             
             <div class="product-card {{ $product->category }}" id={{ $product->id }}>
@@ -31,22 +32,20 @@
                 <a href={{ url('add-to-cart',$product->slug) }} class="add-to-cart">Add To Cart</a>
             </div>
             @endforeach
+            @else
+  <p class="text-center">No Products.</p>
+  @endif
             @auth
             
         @if (auth()->user()->cart()->count() > 0)
         <button class="btn" id="cart-icon"data-bs-toggle="modal" data-bs-target="#cart">
             <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Cart" />
-            <span class="badge text-bg-secondary">{{ auth()->user()->cart()->count() }}</span>
+            <span class="badge text-bg-danger rounded-circle">{{ auth()->user()->cart()->count() }}</span>
         </button>
         @endif
         @endauth
         </div>
     </section>
-    <x-auth.login/>
-    <x-auth.register/>
     <x-cart/>
 <x-footer/>
-        @endsection
-        @section('script')
-            <script src={{ url("script.js") }}></script>
         @endsection

@@ -1,12 +1,8 @@
-
-<div class="modal fade" id="register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-  <div class="modal-header">
-    <h1 class="modal-title fs-5" id="exampleModalLabel">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <section class="register-section">
+@extends('layout')
+@section('content')
+    
+<x-navbar/>
+<section class="register-section">
   <div class="register-container">
     <h2>Create Account</h2>
     <p class="register-subtitle">Join us and start your journey</p>
@@ -18,35 +14,37 @@
       <div class="form-group">
         <label for="name">Full Name</label>
         <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus>
-        @error('name') <small class="error">{{ $message }}</small> @enderror
+        @error('name') <small class="error text-danger">{{ $message }}</small> @enderror
       </div>
 
       <!-- Email -->
       <div class="form-group">
         <label for="email">Email Address</label>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required>
-        @error('email') <small class="error">{{ $message }}</small> @enderror
+        @error('email') <small class="error text-danger">{{ $message }}</small> @enderror
       </div>
 
       <!-- Password -->
       <div class="form-group">
         <label for="password">Password</label>
         <input id="password" type="password" name="password" required>
-        @error('password') <small class="error">{{ $message }}</small> @enderror
+        @error('password') <small class="error text-danger">{{ $message }}</small> @enderror
       </div>
 
       <!-- Country -->
       <div class="form-group">
         <label for="country">Country</label>
-        <select id="country" name="country" required></select>
-        @error('country') <small class="error">{{ $message }}</small> @enderror
+        <select id="country" name="country">
+          <option value="">Select Your Country</option>
+        </select>
+        @error('country') <small class="error text-danger">{{ $message }}</small> @enderror
       </div>
 
       <!-- Phone -->
       <div class="form-group">
         <label for="phone">Phone Number</label>
         <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" required>
-        @error('phone') <small class="error">{{ $message }}</small> @enderror
+        @error('phone') <small class="error text-danger">{{ $message }}</small> @enderror
       </div>
 
       <!-- Submit -->
@@ -54,14 +52,14 @@
 
     </form>
       <div class="extra-links">
-        <button data-bs-toggle="modal" data-bs-target="#login">Log in</button>
+        <a href="{{ route('login') }}">Already have Account? Login</a>
       </div>
   </div>
 </section>
-</div>
-</div>
-</div>
-
+<x-footer/>
+@endsection
+@section('script')
+    
 
 <!-- Script to load all countries dynamically -->
 <script>
@@ -76,7 +74,7 @@
         const option = document.createElement("option");
         option.value = country.name.common;
         option.textContent = country.name.common;
-        option.selected = country.name.common === "Morocco"; // default example
+        // option.selected = country.name.common === "Morocco"; // default example
         countrySelect.appendChild(option);
       });
     } catch (error) {
@@ -84,3 +82,4 @@
     }
   });
 </script>
+@endsection
